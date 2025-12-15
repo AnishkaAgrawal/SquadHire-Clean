@@ -1,0 +1,19 @@
+
+<%- include("partials/head.ejs")%>
+
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+  <%- include("partials/navbar.ejs",{isLoggedIn: isLoggedIn,user})%>
+
+  <h1 class="text-3xl font-bold text-red-600 text-center mt-6 animate-fade-in">
+    ✅ Your Form has been Submitted Successfully!
+  </h1>
+
+  <div class="mt-8">
+    <a href="/user" 
+       class="text-2xl font-semibold border-2 border-red-500 text-white bg-red-600 px-6 py-3 rounded-lg 
+              transition duration-300 hover:bg-red-700 hover:scale-105 shadow-md">
+      ⬅️ Return Home
+    </a>
+  </div>
+</body>
+</html>

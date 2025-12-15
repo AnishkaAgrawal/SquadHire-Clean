@@ -1,0 +1,98 @@
+<%- include("./partials/head.ejs", { pageTitle: "Apply for Project" }) %>
+
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"
+>
+  <!-- NAVBAR -->
+  <%- include("./partials/navbar.ejs",{user,isLoggedIn,currentPage}) %>
+
+  <!-- MAIN CONTENT -->
+  <section class="max-w-6xl mx-auto px-6 pt-24 pb-32">
+    <!-- PAGE HEADER -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-white mb-2">Apply for this Project</h1>
+      <p class="text-slate-400 max-w-xl">
+        Upload your work files carefully. These will be reviewed by the project
+        owner.
+      </p>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="flex justify-center">
+      <form
+        action="/guest/project/apply/<%= projectId %>/<%= hostId %>"
+        method="POST"
+        enctype="multipart/form-data"
+        class="w-full max-w-xl bg-slate-900/90 backdrop-blur p-8 rounded-3xl shadow-2xl space-y-6"
+      >
+        <!-- Source Code -->
+        <!-- GitHub Source Code -->
+        <div>
+          <label class="text-sm  text-slate-300">GitHub Repository Link</label>
+          <input
+            type="url"
+            name="sourceCode"
+            placeholder="https://github.com/username/repo"
+            required
+            class="w-full mt-1 px-4 py-2 rounded-lg bg-slate-800 placeholder-slate-400 focus:ring-2 text-black focus:ring-indigo-500 outline-none"
+          />
+        </div>
+
+        <!-- Documentation -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">
+            Documentation
+          </label>
+          <input
+            type="file"
+            name="documentation"
+            accept=".pdf"
+            required
+            class="w-full text-sm text-white file:bg-indigo-600 file:border-0 file:px-4 file:py-2 file:rounded-full file:text-white file:font-medium hover:file:bg-indigo-500"
+          />
+          <p class="text-xs text-slate-500 mt-1">PDF format preferred</p>
+        </div>
+
+        <!-- PPT -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">
+            Presentation (PPT)
+          </label>
+          <input
+            type="file"
+            name="ppt"
+            accept=".ppt,.pptx"
+            required
+            class="w-full text-sm text-white file:bg-indigo-600 file:border-0 file:px-4 file:py-2 file:rounded-full file:text-white file:font-medium hover:file:bg-indigo-500"
+          />
+        </div>
+
+        <!-- Demo Video -->
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-1">
+            Demo Video
+          </label>
+          <input
+            type="file"
+            name="demoVideo"
+            accept="video/*"
+            required
+            class="w-full text-sm text-white file:bg-indigo-600 file:border-0 file:px-4 file:py-2 file:rounded-full file:text-white file:font-medium hover:file:bg-indigo-500"
+          />
+          <p class="text-xs text-slate-500 mt-1">MP4 / WebM recommended</p>
+        </div>
+
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          class="w-full mt-4 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-[1.02] transition shadow-lg"
+        >
+          Submit Application
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="opacity-90"><%- include("./partials/footer.ejs") %></div>
+</div>

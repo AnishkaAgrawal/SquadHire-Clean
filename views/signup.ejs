@@ -1,0 +1,162 @@
+<%- include("partials/head.ejs") %>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-slate-200">
+
+<%- include("partials/navbar.ejs", { isLoggedIn: false, user }) %>
+
+<div class="relative flex items-center justify-center px-4 py-16">
+
+  <!-- GLOW EFFECTS -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/20 blur-3xl rounded-full"></div>
+  <div class="absolute bottom-0 -right-32 w-96 h-96 bg-purple-600/20 blur-3xl rounded-full"></div>
+
+  <!-- SIGNUP CARD -->
+  <form action="/signup" method="POST"
+        class="relative w-full max-w-md bg-white/5 backdrop-blur-xl
+               border border-white/10 rounded-2xl p-10 shadow-2xl">
+
+    <!-- HEADER -->
+    <div class="mb-8 text-center">
+      <h2 class="text-3xl font-bold mb-2
+                 bg-gradient-to-r from-indigo-400 to-purple-400
+                 bg-clip-text text-transparent">
+        Create Your Account ✨
+      </h2>
+      <p class="text-slate-400 text-sm">
+        Join SquadHire and start building today
+      </p>
+    </div>
+
+    <!-- ERRORS -->
+    <% if (errorMsg.length > 0) { %>
+      <div class="mb-6 space-y-2">
+        <% errorMsg.forEach(err => { %>
+          <div class="px-4 py-3 rounded-lg bg-red-500/10 
+                      text-red-400 border border-red-500/30 text-sm text-center">
+            <%= err %>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <!-- USERNAME -->
+    <div class="mb-4">
+      <input
+        type="text"
+        name="username"
+        required
+        value="<%= oldOutput.username || '' %>"
+        placeholder="👤 Username"
+        class="w-full px-4 py-3 rounded-xl bg-slate-900/70
+               border border-white/10 text-slate-200
+               placeholder-slate-500
+               focus:ring-2 focus:ring-indigo-500 outline-none">
+    </div>
+
+    <!-- EMAIL -->
+    <div class="mb-4">
+      <input
+        type="email"
+        name="email"
+        required
+        value="<%= oldOutput.email || '' %>"
+        placeholder="📧 Email"
+        class="w-full px-4 py-3 rounded-xl bg-slate-900/70
+               border border-white/10 text-slate-200
+               placeholder-slate-500
+               focus:ring-2 focus:ring-indigo-500 outline-none">
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="mb-4">
+      <input
+        type="password"
+        name="password"
+        required
+        placeholder="🔒 Password"
+        class="w-full px-4 py-3 rounded-xl bg-slate-900/70
+               border border-white/10 text-slate-200
+               placeholder-slate-500
+               focus:ring-2 focus:ring-indigo-500 outline-none">
+    </div>
+
+    <!-- CONFIRM PASSWORD -->
+    <div class="mb-6">
+      <input
+        type="password"
+        name="confirmPassword"
+        required
+        placeholder="✅ Confirm Password"
+        class="w-full px-4 py-3 rounded-xl bg-slate-900/70
+               border border-white/10 text-slate-200
+               placeholder-slate-500
+               focus:ring-2 focus:ring-indigo-500 outline-none">
+    </div>
+
+    <!-- USER TYPE -->
+    <div class="mb-6 text-center">
+      <p class="font-medium text-slate-300 mb-3">Choose Account Type</p>
+
+      <div class="flex justify-center gap-6">
+
+        <!-- GUEST -->
+        <label class="flex items-center gap-2 cursor-pointer px-4 py-2 rounded-xl
+                       bg-slate-900/60 border border-white/10 hover:border-indigo-500/50 transition">
+          <input
+            type="radio"
+            name="userType"
+            value="guest"
+            class="accent-indigo-500"
+            <%= oldOutput.userType === "guest" ? "checked" : "" %>>
+          <span class="text-sm">Guest</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer px-4 py-2 rounded-xl
+                       bg-slate-900/60 border border-white/10 hover:border-indigo-500/50 transition">
+          <input
+            type="radio"
+            name="userType"
+            value="supervisor"
+            class="accent-indigo-500"
+            <%= oldOutput.userType === "supervisor" ? "checked" : "" %>>
+          <span class="text-sm">supervisor</span>
+        </label>
+
+        <!-- HOST -->
+        <label class="flex items-center gap-2 cursor-pointer px-4 py-2 rounded-xl
+                       bg-slate-900/60 border border-white/10 hover:border-indigo-500/50 transition">
+          <input
+            type="radio"
+            name="userType"
+            value="host"
+            required
+            class="accent-indigo-500"
+            <%= oldOutput.userType === "host" ? "checked" : "" %>>
+          <span class="text-sm font-semibold">Host</span>
+        </label>
+
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <button
+      type="submit"
+      class="w-full py-3 rounded-xl text-lg font-semibold text-white
+             bg-gradient-to-r from-indigo-500 to-purple-500
+             hover:from-indigo-400 hover:to-purple-400
+             shadow-lg hover:shadow-indigo-500/40
+             transition transform hover:scale-[1.02]">
+      🚀 Sign Up
+    </button>
+
+    <p class="mt-6 text-center text-sm text-slate-400">
+      Already have an account?
+      <a href="/login" class="text-indigo-400 hover:text-indigo-300 font-medium">
+        Login here
+      </a>
+    </p>
+
+  </form>
+</div>
+
+</body>
+</html>

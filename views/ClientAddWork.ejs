@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Project | SquadHire</title>
+  <link href="/output.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-slate-200">
+
+<%- include("./partials/navbar", { isLoggedIn, currentPage }) %>
+
+<div class="relative max-w-4xl mx-auto mt-16 mb-24">
+
+  <div class="absolute -top-20 -left-20 w-72 h-72 bg-indigo-600/20 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 -right-20 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl"></div>
+
+  <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 
+              shadow-2xl rounded-2xl p-10">
+
+    <% if (errorMsg.length > 0) { %>
+      <div class="mb-6 space-y-2">
+        <% errorMsg.forEach(item => { %>
+          <p class="px-4 py-2 rounded-lg bg-red-500/10 text-red-400 border border-red-500/30">
+            <%= item %>
+          </p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <h2 class="text-3xl font-bold mb-2
+               bg-gradient-to-r from-indigo-400 to-purple-400
+               bg-clip-text text-transparent">
+      Add New Project
+    </h2>
+    <p class="text-slate-400 mb-8">
+      Post your idea and build your squad 🚀
+    </p>
+
+    <form action="/host/add-project" method="POST" class="space-y-7">
+
+      <div>
+        <label class="block mb-2 font-medium">Project Title</label>
+        <input type="text" name="title" required
+          value="<%= oldOutput.title || '' %>"
+          placeholder="React Analytics Dashboard"
+          class="w-full px-4 py-3 rounded-lg bg-slate-900/70 border border-white/10
+                 focus:ring-2 focus:ring-indigo-500 outline-none">
+      </div>
+
+      <div>
+        <label class="block mb-2 font-medium">Engineering Domain</label>
+        <select name="domain" required
+          class="w-full px-4 py-3 rounded-lg bg-slate-900/70 border border-white/10">
+          <option value="">Select domain</option>
+          <option>Computer / IT</option>
+          <option>Electronics</option>
+          <option>Electrical</option>
+          <option>Mechanical</option>
+          <option>Data / AI</option>
+          <option>Mixed</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-3 font-medium">Required Skills</label>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <% ['Java','Python','C++','React','Node.js','MongoDB','SQL','MATLAB','IoT','Machine Learning']
+            .forEach(skill => { %>
+            <label class="flex items-center gap-2 px-3 py-2 rounded-lg 
+                           bg-slate-900/60 border border-white/10 hover:border-indigo-500 transition">
+              <input type="checkbox" name="skills" value="<%= skill %>" class="accent-indigo-500">
+              <span class="text-sm"><%= skill %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block mb-2 font-medium">Project Level</label>
+          <select name="level" required
+            class="w-full px-4 py-3 rounded-lg bg-slate-900/70 border border-white/10">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block mb-2 font-medium">Time Duration</label>
+          <select name="duration"
+            class="w-full px-4 py-3 rounded-lg bg-slate-900/70 border border-white/10">
+            <option>3 – 5 Days</option>
+            <option>1 Week</option>
+            <option>2 Weeks</option>
+            <option>Flexible</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block mb-2 font-medium">Project Description</label>
+        <textarea name="description" rows="4"
+          class="w-full px-4 py-3 rounded-lg bg-slate-900/70 border border-white/10
+                 focus:ring-2 focus:ring-indigo-500 outline-none"
+          placeholder="Explain clearly what work you want"><%= oldOutput.description || '' %></textarea>
+      </div>
+
+      <!-- DELIVERABLES -->
+      <div>
+        <label class="block mb-3 font-medium">Expected Deliverables</label>
+        <div class="grid grid-cols-2 gap-3">
+          <% ['Source Code','Documentation','PPT','Demo Video'].forEach(item => { %>
+            <label class="flex items-center gap-2 px-3 py-2 rounded-lg 
+                           bg-slate-900/60 border border-white/10">
+              <input type="checkbox" name="deliverables" value="<%= item %>" class="accent-indigo-500">
+              <span class="text-sm"><%= item %></span>
+            </label>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- BUDGET -->
+      <div>
+        <label class="block mb-2 font-medium">Budget Range</label>
+        <select name="budget" required
+          class="w-full px-4 py-3 rounded-lg bg-slate-900/70 border border-white/10">
+          <option>₹3,000 – ₹5,000</option>
+          <option>₹5,000 – ₹15,000</option>
+          <option>₹15,000+</option>
+        </select>
+      </div>
+
+      <button type="submit"
+        class="w-full py-4 rounded-xl font-semibold text-lg text-white
+               bg-gradient-to-r from-indigo-500 to-purple-500
+               hover:from-indigo-400 hover:to-purple-400
+               shadow-lg hover:shadow-indigo-500/40 transition">
+        🚀 Post Project
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<%- include('./partials/footer') %>
+
+</body>
+</html>

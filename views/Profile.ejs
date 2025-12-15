@@ -1,0 +1,101 @@
+<%- include("./partials/head", { pageTitle }) %>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black relative overflow-hidden">
+
+  <%- include("./partials/navbar", { isLoggedIn, currentPage,user }) %>
+
+  <div class="max-w-6xl mx-auto px-6 py-16">
+
+    <!-- Header -->
+    <div class="mb-14">
+      <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r 
+                 from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+        Your Profile
+      </h1>
+      <p class="text-slate-400 mt-3 text-lg">
+        Manage and customize your identity ✨
+      </p>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-10 shadow-2xl 
+                relative overflow-hidden">
+
+      <!-- Neon hover glow -->
+      <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 
+                  opacity-0 hover:opacity-100 transition duration-500 rounded-3xl"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row gap-10 md:gap-16 items-start">
+
+        <!-- PROFILE PHOTO -->
+        <div class="flex flex-col items-center">
+          
+          <img 
+            src="<%= info.userProfile? info.userProfile : '/images/defaultUser.jpg' %>" 
+            alt="Profile Photo"
+            class="w-40 h-40 rounded-full object-cover border border-white/20 shadow-xl"
+          />
+
+          <form 
+            action="/guest/upload-photo" 
+            method="POST" 
+            enctype="multipart/form-data" 
+            class="mt-5"
+          >
+            <label class="cursor-pointer px-5 py-2 bg-indigo-600/80 text-white rounded-lg shadow 
+                           hover:bg-indigo-600 transition-all">
+              Change Photo
+              <input type="file"  name="userProfile" accept="image/*" class="hidden" onchange="this.form.submit()">
+            </label>
+          </form>
+
+        </div>
+
+        <!-- PROFILE DETAILS -->
+        <div class="flex-1 space-y-6">
+
+          <!-- Username -->
+          <div>
+            <p class="text-sm font-semibold text-slate-400">Username</p>
+            <p class="text-xl bg-white/10 border border-white/10 rounded-xl p-4 text-slate-100 shadow">
+              <%= info.username %>
+            </p>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <p class="text-sm font-semibold text-slate-400">Email</p>
+            <p class="text-xl bg-white/10 border border-white/10 rounded-xl p-4 text-slate-100 shadow">
+              <%= info.email %>
+            </p>
+          </div>
+
+          <!-- User Type -->
+          <div>
+            <p class="text-sm font-semibold text-slate-400">User Type</p>
+            <p class="text-xl capitalize bg-white/10 border border-white/10 rounded-xl p-4 text-slate-100 shadow">
+              <%= info.userType %>
+            </p>
+          </div>
+
+        
+
+          <!-- EDIT PROFILE BUTTON -->
+          <a 
+            href="/guest/edit/<%= info._id %>"
+            class="inline-block px-6 py-3 rounded-xl font-semibold mt-4
+                   bg-emerald-500/80 hover:bg-emerald-500 text-white shadow-lg
+                   transition-all">
+            Edit Profile
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <%- include("partials/footer") %>
+</div>

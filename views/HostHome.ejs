@@ -1,0 +1,109 @@
+<%- include("./partials/head", { pageTitle }) %>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-slate-200">
+
+<%- include("./partials/navbar", { isLoggedIn, currentPage }) %>
+
+<div class="relative max-w-7xl mx-auto px-6 py-16">
+
+  <div class="absolute -top-20 -left-32 w-96 h-96 bg-indigo-600/20 blur-3xl rounded-full"></div>
+  <div class="absolute top-40 -right-32 w-96 h-96 bg-purple-600/20 blur-3xl rounded-full"></div>
+
+  <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
+
+    <div>
+      <h1 class="text-4xl font-bold mb-2
+        bg-gradient-to-r from-indigo-400 to-purple-400
+        bg-clip-text text-transparent">
+        Your Projects
+      </h1>
+      <p class="text-slate-400">
+        All projects posted by you are listed below
+      </p>
+    </div>
+
+    <a href="/host/add-project"
+      class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold
+             bg-gradient-to-r from-indigo-500 to-purple-500
+             hover:from-indigo-400 hover:to-purple-400
+             shadow-lg hover:shadow-indigo-500/40 transition">
+      ➕ Add New Project
+    </a>
+  </div>
+
+  <% if (!projects || projects.length === 0) { %>
+    <div class="relative bg-white/5 border border-white/10 backdrop-blur-xl
+                rounded-2xl p-14 text-center shadow-xl">
+      <p class="text-slate-400 text-lg">
+        You have not added any projects yet.
+      </p>
+    </div>
+  <% } %>
+
+  <div class="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <% projects && projects.forEach(project => { %>
+
+      <div class="group bg-white/5 backdrop-blur-xl border border-white/10
+                  rounded-2xl p-7 flex flex-col
+                  hover:border-indigo-500/40 hover:shadow-xl
+                  transition-all duration-300">
+
+        <h2 class="text-xl font-semibold mb-2 group-hover:text-indigo-400 transition">
+          <%= project.title %>
+        </h2>
+
+        <span class="inline-block w-fit mb-4 px-3 py-1 text-xs font-medium
+                     rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+          <%= project.domain %>
+        </span>
+
+        <p class="text-sm text-slate-400 mb-5 line-clamp-3">
+          <%= project.description %>
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+          <% project.skills.forEach(skill => { %>
+            <span class="px-3 py-1 rounded-full text-xs
+                         bg-slate-900/70 border border-white/10 text-slate-300">
+              <%= skill %>
+            </span>
+          <% }) %>
+        </div>
+
+        <div class="mt-auto text-sm text-slate-400 space-y-1">
+          <p><span class="font-semibold text-slate-200">Duration:</span> <%= project.duration %></p>
+          <p><span class="font-semibold text-slate-200">Budget:</span> ₹ <%= project.budget %></p>
+          <p><span class="font-semibold text-slate-200">Level:</span> <%= project.level || "Any" %></p>
+        </div>
+        <div class="mt-6 flex gap-3">
+  
+          <!-- DELETE PROJECT -->
+          <form action="/host/delete-project" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this project?')">
+                
+            <input type="hidden" name="projectId" value="<%= project._id %>">
+        
+            <button type="submit"
+              class="px-4 py-2 text-sm font-semibold rounded-lg
+                     bg-red-500/10 text-red-400 border border-red-500/30
+                     hover:bg-red-500 hover:text-white
+                     transition">
+              🗑 Delete
+            </button>
+        
+          </form>
+        
+        </div>
+        
+
+      </div>
+
+    <% }) %>
+
+  </div>
+</div>
+
+<%- include("partials/footer") %>
+
+</body>

@@ -1,0 +1,140 @@
+<%- include("./partials/head.ejs", { pageTitle }) %>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+
+  <%- include("./partials/navbar.ejs", { currentPage, user, isLoggedIn }) %>
+
+  <section class="max-w-6xl mx-auto pt-20 pb-32 px-6">
+
+    <!-- TOP ACTION -->
+    <div class="flex justify-end mb-10">
+      <a href="/guest/reels/add"
+        class="px-6 py-2 rounded-full text-sm font-semibold text-white
+        bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg hover:scale-105 transition">
+        + Create Reel
+      </a>
+    </div>
+
+    <% if (reels && reels.length > 0) { %>
+
+      <div class="space-y-24">
+
+        <% reels.forEach(function (reel, index) { %>
+
+          <!-- REEL WRAPPER -->
+          <div class="flex justify-center">
+
+            <div class="w-full max-w-md">
+
+              <!-- VIDEO CARD -->
+              <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-black">
+
+                <!-- FIXED SIZE VIDEO -->
+                <div class="aspect-[9/16]">
+                  <video
+                    src="<%= reel.videoUrl %>"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    class="w-full h-full object-cover">
+                  </video>
+                </div>
+
+                <!-- OVERLAY -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+
+                <!-- CAPTION -->
+                <div class="absolute bottom-4 left-4 right-4 text-white">
+                  <p class="text-sm font-semibold mb-1">@CreatorName</p>
+                  <% if (reel.caption) { %>
+                    <p class="text-xs text-slate-300 line-clamp-2">
+                      <%= reel.caption %>
+                    </p>
+                  <% } %>
+                </div>
+              </div>
+
+              <!-- ACTIONS + COMMENTS (ONE DIV) -->
+              <div class="bg-slate-900 rounded-2xl mt-4 p-4 shadow-xl">
+
+                <!-- ACTION BUTTONS -->
+                <div class="flex justify-around text-white mb-4">
+
+                  <button class="flex items-center gap-2 hover:scale-105 transition">
+                    <span class="text-xl">❤️</span>
+                    <span class="text-sm font-semibold"><%= reel.like || 0 %></span>
+                  </button>
+
+                  <button class="flex items-center gap-2 hover:scale-105 transition">
+                    <span class="text-xl">💬</span>
+                    <span class="text-sm font-semibold">
+                      <%= reel.comments ? reel.comments.length : 0 %>
+                    </span>
+                  </button>
+
+                  <button class="flex items-center gap-2 hover:scale-105 transition">
+                    <span class="text-xl">👎</span>
+                    <span class="text-sm font-semibold"><%= reel.dislikes || 0 %></span>
+                  </button>
+
+                </div>
+
+                <!-- COMMENTS -->
+                <div class="space-y-2 max-h-28 overflow-y-auto text-sm text-slate-300 mb-3">
+                  <% if (reel.comments && reel.comments.length > 0) { %>
+                    <% reel.comments.slice(0, 3).forEach(function(comment) { %>
+                      <p>
+                        <span class="font-semibold text-white">
+                          <%= comment.username || "User" %>:
+                        </span>
+                        <%= comment.text %>
+                      </p>
+                    <% }) %>
+                  <% } else { %>
+                    <p class="text-slate-500 text-center">No comments yet</p>
+                  <% } %>
+                </div>
+
+                <!-- ADD COMMENT -->
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  class="w-full px-4 py-2 rounded-full bg-slate-800 text-black text-sm
+                  placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <button>📩</button>
+              </div>
+
+            </div>
+          </div>
+
+        <% }) %>
+
+      </div>
+
+    <% } else { %>
+
+      <!-- EMPTY STATE -->
+      <div class="flex flex-col items-center justify-center min-h-[60vh] text-center">
+        <div class="w-24 h-24 mb-6 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-4xl shadow-xl">
+          🎬
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-3">No reels yet</h2>
+        <p class="text-slate-400 mb-8">
+          Upload short videos to showcase your skills and work.
+        </p>
+        <a href="/guest/reels/add"
+          class="px-8 py-4 rounded-2xl text-white font-semibold
+          bg-gradient-to-r from-pink-500 to-purple-600 shadow-xl hover:scale-105 transition">
+          Upload Your First Reel
+        </a>
+      </div>
+
+    <% } %>
+
+  </section>
+
+  <%- include("./partials/footer.ejs") %>
+
+</div>

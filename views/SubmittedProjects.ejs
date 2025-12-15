@@ -1,0 +1,126 @@
+<%- include("./partials/head", { pageTitle }) %>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-slate-200">
+
+<%- include("./partials/navbar", { isLoggedIn, currentPage, user }) %>
+
+<div class="relative max-w-7xl mx-auto px-6 py-20">
+
+  <!-- Glow -->
+  <div class="absolute -top-20 -left-32 w-96 h-96 bg-indigo-600/20 blur-3xl rounded-full"></div>
+  <div class="absolute top-40 -right-32 w-96 h-96 bg-purple-600/20 blur-3xl rounded-full"></div>
+
+  <!-- Header -->
+  <div class="relative mb-14">
+    <h1 class="text-4xl md:text-5xl font-extrabold
+               bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500
+               bg-clip-text text-transparent">
+      Submitted Projects
+    </h1>
+    <p class="text-slate-400 mt-3 text-lg">
+      Review all submissions received for your projects
+    </p>
+  </div>
+
+  <% if (!sub || sub.length === 0) { %>
+    <!-- Empty State -->
+    <div class="bg-white/5 backdrop-blur-xl border border-white/10
+                rounded-2xl p-14 text-center shadow-xl">
+      <p class="text-slate-400 text-lg">
+        No submissions received yet.
+      </p>
+    </div>
+  <% } %>
+
+  <!-- Submissions Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <% sub && sub.forEach(item => { %>
+
+      <div class="group relative bg-white/5 backdrop-blur-xl border border-white/10
+                  rounded-2xl p-6 shadow-xl
+                  hover:shadow-indigo-500/30 hover:-translate-y-1
+                  transition-all duration-300">
+
+        <!-- User Info -->
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-12 h-12 rounded-full bg-indigo-500/20
+                      flex items-center justify-center text-xl">
+            👤
+          </div>
+          <div>
+            <h2 class="text-lg font-semibold text-white">
+              <%= item.username %>
+            </h2>
+            <p class="text-sm text-slate-400">
+              <%= item.email %>
+            </p>
+          </div>
+        </div>
+
+        <!-- Links -->
+        <div class="space-y-3 text-sm">
+
+          <!-- Source Code -->
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">Source Code</span>
+            <a href="<%= item.sourceCode %>" target="_blank"
+               class="text-indigo-400 hover:underline">
+              View Repo
+            </a>
+          </div>
+
+          <!-- Documentation -->
+          <% if (item.documentation?.length) { %>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">Documentation</span>
+              <a href="/uploads/work-done/<%= item.documentation[0].filename %>"
+                 target="_blank"
+                 class="text-indigo-400 hover:underline">
+                View PDF
+              </a>
+            </div>
+          <% } %>
+
+          <!-- PPT -->
+          <% if (item.ppt?.length) { %>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">Presentation</span>
+              <a href="/uploads/work-done/<%= item.ppt[0].filename %>"
+                 target="_blank"
+                 class="text-indigo-400 hover:underline">
+                View PPT
+              </a>
+            </div>
+          <% } %>
+
+          <!-- Demo Video -->
+          <% if (item.demoVideo?.length) { %>
+            <div class="flex justify-between items-center">
+              <span class="text-slate-400">Demo Video</span>
+              <a href="/uploads/work-done/<%= item.demoVideo[0].filename %>"
+                 target="_blank"
+                 class="text-indigo-400 hover:underline">
+                Watch
+              </a>
+            </div>
+          <% } %>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 pt-4 border-t border-white/10 text-xs text-slate-500">
+          Submission received
+        </div>
+
+      </div>
+
+    <% }) %>
+
+  </div>
+
+</div>
+
+<%- include("./partials/footer") %>
+
+</body>

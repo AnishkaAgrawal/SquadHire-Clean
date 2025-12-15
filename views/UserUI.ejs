@@ -1,0 +1,98 @@
+<%- include("./partials/head" , {pageTitle}) %>
+<div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black relative overflow-hidden">
+
+
+<%- include("./partials/navbar" , {isLoggedIn ,currentPage }) %>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black">
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    
+    <!-- PAGE HEADER -->
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-14">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+          Your Projects
+        </h1>
+        <p class="text-slate-400 mt-3 text-lg">
+          Build. Ship. Win. 🚀
+        </p>
+      </div>
+    </div>
+
+    <!-- NO PROJECTS -->
+    <% if (!projects || projects.length === 0) { %>
+      <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-14 text-center shadow-2xl">
+        <p class="text-slate-300 text-lg">
+          You haven’t added any projects yet.
+        </p>
+      </div>
+    <% } %>
+
+    <!-- PROJECT GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <% projects && projects.forEach(project => { %>
+
+        <div class="group relative bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-xl
+                    hover:shadow-indigo-500/30 hover:-translate-y-1 transition-all duration-300 flex flex-col">
+
+          <!-- Neon Border Effect -->
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition"></div>
+
+          <div class="relative flex flex-col h-full">
+
+            <!-- TITLE -->
+            <h2 class="text-2xl font-bold text-white mb-3">
+              <%= project.project.title %>
+            </h2>
+
+            <!-- DOMAIN -->
+            <span class="inline-block w-fit px-4 py-1 text-xs uppercase tracking-wide font-semibold 
+                         bg-indigo-500/20 text-indigo-300 rounded-full mb-4">
+              <%= project.project.domain %>
+            </span>
+
+            <!-- DESCRIPTION -->
+            <p class="text-slate-300 text-sm leading-relaxed mb-5 line-clamp-3">
+              <%= project.project.description %>
+            </p>
+
+            <!-- SKILLS -->
+            <div class="flex flex-wrap gap-2 mb-6">
+              <% project.project.skills.forEach(skill => { %>
+                <span class="px-3 py-1 bg-white/10 text-slate-200 text-xs rounded-full border border-white/10">
+                  <%= skill %>
+                </span>
+              <% }) %>
+            </div>
+
+            <!-- META DETAILS -->
+            <div class="text-sm text-slate-400 space-y-2 mt-auto">
+              <p><strong class="text-slate-200">Duration:</strong> <%= project.project.duration %></p>
+              <p><strong class="text-slate-200">Budget:</strong> ₹ <%= project.project.budget %></p>
+              <p><strong class="text-slate-200">Level:</strong> <%= project.project.level || "Any" %></p>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="mt-6 flex gap-3">
+              <a href="/guest/project/<%= project.project._id %>/<%= project.id %>"
+                 class="flex-1 px-4 py-2 text-sm font-semibold text-center
+                        bg-indigo-500/80 hover:bg-indigo-500 text-white rounded-lg
+                        transition">
+                Details
+              </a>
+
+              
+            </div>
+
+          </div>
+        </div>
+
+      <% }) %>
+
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>
+</div>

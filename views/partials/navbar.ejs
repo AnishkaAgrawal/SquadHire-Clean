@@ -1,0 +1,129 @@
+<nav class="sticky top-2 z-50 mx-4 rounded-2xl
+            bg-slate-900/80 backdrop-blur-xl border border-white/10
+            shadow-[0_0_40px_-10px_rgba(99,102,241,0.4)]">
+
+  <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+
+    <a href="/reels"
+       class="text-2xl font-extrabold tracking-wide
+              bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500
+              bg-clip-text text-transparent">
+      SquadHire
+    </a>
+   
+
+    <div class="flex flex-wrap items-center gap-3">
+      <a href="/reels"
+      class="px-5 py-2 text-sm font-semibold rounded-lg transition
+      <%= currentPage === 'all'
+        ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+        : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+     Home
+   </a>
+      <% if (isLoggedIn) { %>
+        
+
+        <% if (user.userType === 'host') { %>
+
+          <a href="/host/go-home"
+            class="px-5 py-2 text-sm font-semibold rounded-lg transition
+            <%= currentPage === 'HostHome'
+              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+            Projects
+          </a>
+          <a href="/host/complete"
+          class="px-5 py-2 text-sm font-semibold rounded-lg transition
+          <%= currentPage === 'completeProject'
+            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+            : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+          Project Completed
+        </a>
+
+          <a href="/host/add-project"
+            class="px-5 py-2 text-sm font-semibold rounded-lg transition
+            <%= currentPage === 'addHome'
+              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+            Add Project
+          </a>
+        </a>
+        <a href="/guest/user-profile"
+          class="px-5 py-2 text-sm font-semibold rounded-lg transition
+          <%= currentPage === 'profile'
+            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+            : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+           Profile
+        </a>
+        <% } %>
+
+        <% if (user.userType === 'guest') { %>
+
+          <a href="/guest/your-work"
+            class="px-5 py-2 text-sm font-semibold rounded-lg transition
+            <%= currentPage === 'UserWork'
+              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+            Your Work
+          </a>
+          <a href="/guest/reel"
+          class="px-5 py-2 text-sm font-semibold rounded-lg transition
+          <%= currentPage === 'Reel'
+            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+            : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+          Your Reel
+        </a>
+          <a href="/guest/user-profile"
+            class="px-5 py-2 text-sm font-semibold rounded-lg transition
+            <%= currentPage === 'profile'
+              ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+              : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+             Profile
+          </a>
+
+          
+
+        <% } %>
+
+        <form action="/logout" method="POST">
+          <button type="submit"
+            class="px-5 py-2 text-sm font-semibold rounded-lg text-white
+                   bg-gradient-to-r from-red-500 to-pink-500
+                   hover:brightness-110 transition shadow-md">
+            Logout
+          </button>
+        </form>
+
+      <% } else { %>
+
+        <!-- <a href="/guest"
+          class="px-5 py-2 text-sm font-semibold rounded-lg transition
+          <%= currentPage === 'home'
+            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+            : 'text-slate-300 hover:bg-white/10 hover:text-white' %>">
+          Home
+        </a> -->
+
+        <form action="/login" method="GET">
+          <button type="submit"
+            class="px-5 py-2 text-sm font-semibold rounded-lg
+                   text-slate-200 bg-white/10 hover:bg-white/20
+                   transition">
+            Login
+          </button>
+        </form>
+
+        <form action="/signup" method="GET">
+          <button type="submit"
+            class="px-5 py-2 text-sm font-semibold rounded-lg text-white
+                   bg-gradient-to-r from-indigo-500 to-purple-600
+                   hover:brightness-110 transition shadow-lg">
+            Sign Up
+          </button>
+        </form>
+
+      <% } %>
+
+    </div>
+  </div>
+</nav>
