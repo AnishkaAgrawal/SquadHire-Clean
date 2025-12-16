@@ -7,13 +7,16 @@
   <section class="max-w-6xl mx-auto pt-20 pb-32 px-6">
 
     <!-- TOP ACTION -->
-    <div class="flex justify-end mb-10">
-      <a href="/guest/reels/add"
-        class="px-6 py-2 rounded-full text-sm font-semibold text-white
-        bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg hover:scale-105 transition">
-        + Create Reel
-      </a>
-    </div>
+     <% if(user.userType==='guest'){ %>
+      <div class="flex justify-end mb-10">
+        <a href="/guest/reels/add"
+          class="px-6 py-2 rounded-full text-sm font-semibold text-white
+          bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg hover:scale-105 transition">
+          + Create Reel
+        </a>
+      </div>
+    <% } %>
+    
 
     <% if (reels && reels.length > 0) { %>
 

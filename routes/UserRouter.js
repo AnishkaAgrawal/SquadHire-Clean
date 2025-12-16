@@ -2,7 +2,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const {userInterface,ProjectDetails,AddReels,UserProfile,EditProfile,handleEditProfilePost,handleUploadPhoto,Reels,UserApplied ,UserWorkDisplay,GetAddReels,postWorkForm} = require("../controllers/user")
+const {userInterface,ProjectDetails,AddReels,UserProfile,EditProfile,handleEditProfilePost,handleUploadPhoto,Reels,UserApplied,ViewProjects ,UserWorkDisplay,GetAddReels,postWorkForm} = require("../controllers/user")
 const UserRouter = express.Router();
 
 
@@ -105,6 +105,7 @@ UserRouter.post("/reels/add", VideoMulter.single("videoUrl"), AddReels);
 UserRouter.get("/reel", Reels);
 UserRouter.get("/your-work", UserWorkDisplay);
 UserRouter.get("/user-profile", UserProfile);
+UserRouter.get("/work", ViewProjects);
 UserRouter.get("/edit/:userId", EditProfile);
 UserRouter.post("/upload-photo", multer(multerOptions).single("userProfile"),handleUploadPhoto);
 

@@ -49,7 +49,7 @@ exports.postLoginPage = (req,res)=>{
       req.session.user = user ;
       return req.session.save(err=>{
         if(err) console.log(err);
-        return res.redirect("/guest");
+        return res.redirect("/reels");
       }
     )
       

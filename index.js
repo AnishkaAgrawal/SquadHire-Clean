@@ -6,8 +6,10 @@ const app = express();
 const {HostRouter}  = require("./routes/HostRouter.js");
 const UserRouter = require("./routes/UserRouter.js");
 const AppRouter = require("./routes/Approuter.js");
+const SupRouter = require("./routes/SupervisorRouter.js");
 const  {SignUpRouter}  = require("./routes/SignUpRouter.js");
 const  {LoginRouter}  = require("./routes/LoginRouter.js");
+
 
 const PORT = 2300;
 const mongoose = require("mongoose");
@@ -48,6 +50,12 @@ app.use("/guest", (req, res, next) => {
   }
   next();
 });
+app.use("/supervisor", (req, res, next) => {
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/signup");
+  }
+  next();
+});
 
 app.use("/host", (req, res, next) => {
   if (!req.session.isLoggedIn) {
@@ -64,6 +72,7 @@ app.use("/book", (req, res, next) => {
 });
 app.use("/reels" , AppRouter);
 app.use("/guest", UserRouter);
+app.use("/supervisor", SupRouter);
 app.use("/host", HostRouter);
 app.use("/signup", SignUpRouter);
 app.use(LoginRouter);

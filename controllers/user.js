@@ -211,15 +211,16 @@ exports.UserApplied = (req,res)=>{
 exports.postWorkForm = async (req,res)=>{
   // console.log("inside work done" , req.body, req.files );
   // const project
+
   const userInfo = await User.findById(req.session.user._id); 
   userInfo.yourWork = {
-
-    ...req.body , 
+    hostId : req.params.hostId,
+    userId : userInfo._id ,
+     ...req.body , 
     ...req.files,
     
   }
 
-  // hostWorkDone
   await userInfo.save() ;
 
   console.log(req.params.hostId);
@@ -228,10 +229,10 @@ exports.postWorkForm = async (req,res)=>{
   hostDet.hostWorkDone.push({
     ...req.body , 
     ...req.files,
+    userId: userInfo._id ,
     username : userInfo.username , 
     email : userInfo.email , 
     userProfile  :userInfo.userProfile , 
-    yourWork  : userInfo.yourWork,
   });
   await hostDet.save();
   return res.redirect("/guest");
@@ -247,4 +248,16 @@ exports.UserWorkDisplay = async (req,res)=>{
     currentPage: "UserWork" , 
     work : info.yourWork , 
   })
+}
+
+exports.ViewProjects = async(req,res)=>{
+  const info = await User.find();
+  const AllProjects = [];
+  info.forEach(elem =>{
+    if(elem.workAssigned.length >0){
+      AllProjects.push(...elem.workAssigned) ; 
+    }
+  })
+
+  return res.render("")
 }
