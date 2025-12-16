@@ -1,143 +1,211 @@
-<%- include("./partials/head.ejs", { pageTitle }) %>
+<%- include("./partials/head.ejs", { pageTitle: "Reels" }) %>
 
-<div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to bottom, #020617, #020617);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-  <%- include("./partials/navbar.ejs", { currentPage, user, isLoggedIn }) %>
+  .feed-container {
+    max-width: 420px;
+    margin: 0 auto;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    padding-top: 70px; /* navbar space */
+  }
 
-  <section class="max-w-6xl mx-auto pt-20 pb-32 px-6">
+  .feed-container::-webkit-scrollbar {
+    display: none;
+  }
 
-    <!-- TOP ACTION -->
-     <% if(user.userType==='guest'){ %>
-      <div class="flex justify-end mb-10">
-        <a href="/guest/reels/add"
-          class="px-6 py-2 rounded-full text-sm font-semibold text-white
-          bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg hover:scale-105 transition">
-          + Create Reel
-        </a>
-      </div>
-    <% } %>
-    
+  .feed-item {
+    height: 100vh;
+    position: relative;
+    scroll-snap-align: start;
+    background: black;
+    overflow: hidden;
+  }
 
-    <% if (reels && reels.length > 0) { %>
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 
-      <div class="space-y-24">
+  /* Dark gradient overlay */
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    padding-bottom: 130px;
+    background: linear-gradient(to top, rgba(0,0,0,.9), transparent);
+    z-index: 2;
+  }
 
-        <% reels.forEach(function (reel, index) { %>
+  .overlay h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
 
-          <!-- REEL WRAPPER -->
-          <div class="flex justify-center">
+  .overlay p {
+    margin: 6px 0;
+    font-size: 13px;
+    color: #cbd5f5;
+  }
 
-            <div class="w-full max-w-md">
+  /* Right-side actions */
+  .actions {
+    position: absolute;
+    right: 12px;
+    bottom: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 3;
+    text-align: center;
+  }
 
-              <!-- VIDEO CARD -->
-              <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-black">
+  .action-btn {
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: white;
+  }
 
-                <!-- FIXED SIZE VIDEO -->
-                <div class="aspect-[9/16]">
-                  <video
-                    src="<%= reel.videoUrl %>"
-                    autoplay
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                    class="w-full h-full object-cover">
-                  </video>
-                </div>
+  .action-btn.liked {
+    color: #ff4d4d;
+  }
 
-                <!-- OVERLAY -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+  .action-count {
+    font-size: 12px;
+    color: #ddd;
+  }
 
-                <!-- CAPTION -->
-                <div class="absolute bottom-4 left-4 right-4 text-white">
-                  <p class="text-sm font-semibold mb-1">@CreatorName</p>
-                  <% if (reel.caption) { %>
-                    <p class="text-xs text-slate-300 line-clamp-2">
-                      <%= reel.caption %>
-                    </p>
-                  <% } %>
-                </div>
-              </div>
+  /* Connect button FIXED */
+  .cta-button {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    padding: 14px;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    z-index: 4;
+    box-shadow: 0 10px 30px rgba(79,70,229,.4);
+  }
 
-              <!-- ACTIONS + COMMENTS (ONE DIV) -->
-              <div class="bg-slate-900 rounded-2xl mt-4 p-4 shadow-xl">
+  .cta-button:hover {
+    filter: brightness(1.1);
+  }
+</style>
 
-                <!-- ACTION BUTTONS -->
-                <div class="flex justify-around text-white mb-4">
+</head>
 
-                  <button class="flex items-center gap-2 hover:scale-105 transition">
-                    <span class="text-xl">❤️</span>
-                    <span class="text-sm font-semibold"><%= reel.like || 0 %></span>
-                  </button>
+<body>
 
-                  <button class="flex items-center gap-2 hover:scale-105 transition">
-                    <span class="text-xl">💬</span>
-                    <span class="text-sm font-semibold">
-                      <%= reel.comments ? reel.comments.length : 0 %>
-                    </span>
-                  </button>
+<%- include("./partials/navbar.ejs", { currentPage: "home", isLoggedIn, user }) %>
 
-                  <button class="flex items-center gap-2 hover:scale-105 transition">
-                    <span class="text-xl">👎</span>
-                    <span class="text-sm font-semibold"><%= reel.dislikes || 0 %></span>
-                  </button>
+<div class="feed-container">
 
-                </div>
+  <% if (!projects || projects.length === 0) { %>
+    <div class="feed-item" style="display:flex;align-items:center;justify-content:center;">
+      <p>No reels available</p>
+    </div>
+  <% } %>
 
-                <!-- COMMENTS -->
-                <div class="space-y-2 max-h-28 overflow-y-auto text-sm text-slate-300 mb-3">
-                  <% if (reel.comments && reel.comments.length > 0) { %>
-                    <% reel.comments.slice(0, 3).forEach(function(comment) { %>
-                      <p>
-                        <span class="font-semibold text-white">
-                          <%= comment.username || "User" %>:
-                        </span>
-                        <%= comment.text %>
-                      </p>
-                    <% }) %>
-                  <% } else { %>
-                    <p class="text-slate-500 text-center">No comments yet</p>
-                  <% } %>
-                </div>
+  <% projects.forEach(project => { %>
+    <div class="feed-item">
 
-                <!-- ADD COMMENT -->
-                <input
-                  type="text"
-                  placeholder="Add a comment..."
-                  class="w-full px-4 py-2 rounded-full bg-slate-800 text-black text-sm
-                  placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <button>📩</button>
-              </div>
+      <!-- FIXED iframe src -->
+      <iframe
+        src="<%= project.mediaURL %>"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen>
+      </iframe>
 
-            </div>
-          </div>
-
-        <% }) %>
-
-      </div>
-
-    <% } else { %>
-
-      <!-- EMPTY STATE -->
-      <div class="flex flex-col items-center justify-center min-h-[60vh] text-center">
-        <div class="w-24 h-24 mb-6 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center text-4xl shadow-xl">
-          🎬
-        </div>
-        <h2 class="text-2xl font-bold text-white mb-3">No reels yet</h2>
-        <p class="text-slate-400 mb-8">
-          Upload short videos to showcase your skills and work.
+      <!-- TEXT OVERLAY -->
+      <div class="overlay">
+        <h3><%= project.title %></h3>
+        <p>Demo Content</p>
+        <p>Squad: <strong><%= project.squadName %></strong></p>
+        <p>
+          Skills:
+          <em><%= project.skillsUsed.join(" • ") %></em>
         </p>
-        <a href="/guest/reels/add"
-          class="px-8 py-4 rounded-2xl text-white font-semibold
-          bg-gradient-to-r from-pink-500 to-purple-600 shadow-xl hover:scale-105 transition">
-          Upload Your First Reel
-        </a>
       </div>
 
-    <% } %>
+      <!-- ACTIONS -->
+      <div class="actions">
+        <div>
+          <button
+            class="action-btn"
+            id="like-btn-<%= project._id %>"
+            onclick="handleLike('<%= project._id %>')">
+            ❤️
+          </button>
+          <div class="action-count" id="likes-<%= project._id %>"><%= project.likes %></div>
+        </div>
 
-  </section>
+        <div>
+          <button
+            class="action-btn"
+            onclick="handleSave('<%= project._id %>')">
+            ⭐
+          </button>
+          <div class="action-count" id="saves-<%= project._id %>"><%= project.saves %></div>
+        </div>
+      </div>
 
-  <%- include("./partials/footer.ejs") %>
+      <!-- CTA -->
+      <button
+        class="cta-button"
+        onclick="handleConnect('<%= project.squadName %>')">
+        🤝 Connect & DM
+      </button>
+
+    </div>
+  <% }) %>
 
 </div>
+
+<script>
+  function handleConnect(name) {
+    alert("Opening chat with " + name);
+  }
+
+  function handleLike(id) {
+    const likes = document.getElementById(`likes-${id}`);
+    const btn = document.getElementById(`like-btn-${id}`);
+    let count = parseInt(likes.innerText);
+
+    if (btn.classList.contains("liked")) {
+      likes.innerText = count - 1;
+      btn.classList.remove("liked");
+    } else {
+      likes.innerText = count + 1;
+      btn.classList.add("liked");
+    }
+  }
+
+  function handleSave(id) {
+    const saves = document.getElementById(`saves-${id}`);
+    saves.innerText = parseInt(saves.innerText) + 1;
+  }
+</script>
+
+</body>

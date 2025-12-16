@@ -35,6 +35,7 @@ app.use(session({
   }
 }));
 
+app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -78,7 +79,6 @@ app.use("/signup", SignUpRouter);
 app.use(LoginRouter);
 
 app.use(PageError);
-
 mongoose
   .connect(DATAPATH)
   .then(() => {
